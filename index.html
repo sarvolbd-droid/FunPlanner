@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>FunPlanner</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 20px; background: #f0f8ff; }
+    h1 { color: #333; }
+    #tasks { list-style: none; padding: 0; }
+    #tasks li { margin: 10px 0; }
+    button { margin-left: 10px; margin-top: 5px; }
+    #score { font-weight: bold; margin-top: 20px; }
+    #sticker { font-size: 40px; margin-top: 10px; }
+    #avatar { width: 100px; height: 100px; }
+
+    /* Zone mises à jour */
+    #updates {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 250px;
+      max-height: 400px;
+      overflow-y: auto;
+      background-color: rgba(255,255,255,0.9);
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 14px;
+    }
+    #updates h3 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <h1>FunPlanner</h1>
+  <img id="avatar" src="images/avatar1.png" alt="Avatar"/>
+  <div id="sticker"></div>
+
+  <input type="text" id="taskInput" placeholder="Nouvelle tâche">
+  <button onclick="addTask()">Ajouter</button>
+  <button onclick="addDailyChallenge()">Ajouter le challenge du jour</button>
+  <button onclick="resetGame()">Reset</button>
+
+  <ul id="tasks"></ul>
+  <div id="score">Points: 0</div>
+
+  <!-- Musique de fond -->
+  <audio id="bgMusic" src="audio/background.mp3" autoplay loop></audio>
+
+  <!-- Zone mises à jour -->
+  <div id="updates">
+    <h3>Mises à jour</h3>
+    <ul id="updatesList"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
