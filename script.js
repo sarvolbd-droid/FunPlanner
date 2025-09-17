@@ -139,7 +139,5 @@ window.onload = function() {
 
   // Exemples de mises à jour
   addUpdate("Version 1.0 : lancement du FunPlanner");
-  addUpdate("Avatar animé et stickers ajoutés");
-  addUpdate("Musique de fond activée");
-  addUpdate("Zone mises à jour ajoutée");
+addUpdate("interface graphique renouveler")
 };
