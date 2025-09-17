@@ -138,6 +138,6 @@ window.onload = function() {
   updateScoreAndAvatar();
 
   // Exemples de mises à jour
-  addUpdate("Version 1.0 : lancement du FunPlanner");
+  addUpdate("Version 1.1 : lancement du FunPlanner");
 addUpdate("interface graphique renouveler")
 };
