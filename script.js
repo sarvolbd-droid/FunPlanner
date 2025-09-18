@@ -1,143 +1,107 @@
-let tasks = [];
 let points = 0;
-let dailyChallenge = generateDailyChallenge();
+let taskId = 0;
 
-// --- Sauvegarde et récupération ---
-function saveData() {
-  const data = { tasks: tasks, points: points };
-  localStorage.setItem('funPlannerData', JSON.stringify(data));
-}
-
-function loadData() {
-  const data = JSON.parse(localStorage.getItem('funPlannerData'));
-  if(data) {
-    tasks = data.tasks || [];
-    points = data.points || 0;
-  }
-}
-
-// --- Générer challenge selon la date ---
-function generateDailyChallenge() {
-  const challenges = [
-    "Boire un verre d'eau",
-    "Faire 5 min d'étirements",
-    "Écrire 1 page dans ton journal",
-    "Complimenter quelqu'un",
-    "Ranger ton bureau"
-  ];
-  const today = new Date();
-  const index = (today.getDate() + today.getMonth()) % challenges.length;
-  return challenges[index];
-}
-
-// --- Ajouter tâche normale ---
+// Ajouter une tâche
 function addTask() {
-  const input = document.getElementById('taskInput');
+  const input = document.getElementById("taskInput");
   const taskText = input.value.trim();
-  if(taskText === '') return;
 
-  const task = { text: taskText, done: false, bonus: false };
-  tasks.push(task);
-  input.value = '';
-  renderTasks();
-  saveData();
+  if (taskText === "") return;
+
+  const li = document.createElement("li");
+  li.innerHTML = `
+    ${taskText}
+    <button onclick="completeTask(${taskId})">✔</button>
+    <button onclick="deleteTask(this)">✖</button>
+  `;
+  li.setAttribute("data-id", taskId);
+
+  document.getElementById("tasks").appendChild(li);
+  input.value = "";
+  taskId++;
 }
 
-// --- Ajouter challenge du jour ---
+// Compléter une tâche
+function completeTask(id) {
+  const task = document.querySelector(`li[data-id='${id}']`);
+  if (task) {
+    task.remove();
+    points += 10;
+    updateScore();
+    logUpdate("Tâche complétée (+10 points)");
+  }
+}
+
+// Supprimer une tâche
+function deleteTask(button) {
+  button.parentElement.remove();
+  logUpdate("Tâche supprimée");
+}
+
+// Challenge du jour
 function addDailyChallenge() {
-  const task = { text: dailyChallenge, done: false, bonus: true };
-  tasks.push(task);
-  renderTasks();
-  saveData();
+  const challenges = [
+    "Faire 20 pompes 💪",
+    "Lire 10 pages 📖",
+    "Boire 1L d’eau 💧",
+    "Faire une balade 🚶",
+    "Aider quelqu’un 🤝"
+  ];
+  const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+
+  const li = document.createElement("li");
+  li.innerHTML = `
+    ${challenge}
+    <button onclick="completeChallenge(this)">✔</button>
+  `;
+  document.getElementById("tasks").appendChild(li);
+
+  logUpdate("Nouveau challenge ajouté !");
 }
 
-// --- Cocher/décocher tâche ---
-function toggleTask(index) {
-  const task = tasks[index];
-  task.done = !task.done;
-
-  if(task.bonus) {
-    points += task.done ? 30 : -30;
-  } else {
-    points += task.done ? 10 : -10;
-  }
-
-  renderTasks();
-  updateScoreAndAvatar();
-  saveData();
+// Compléter un challenge
+function completeChallenge(button) {
+  button.parentElement.remove();
+  points += 20;
+  updateScore();
+  logUpdate("Challenge complété (+20 points)");
 }
 
-// --- Afficher les tâches ---
-function renderTasks() {
-  const tasksList = document.getElementById('tasks');
-  tasksList.innerHTML = '';
-  tasks.forEach((task, index) => {
-    const li = document.createElement('li');
-    li.style.color = task.bonus ? 'red' : 'black';
-    li.innerHTML = `<input type="checkbox" ${task.done ? 'checked' : ''} onclick="toggleTask(${index})"> ${task.text}`;
-    tasksList.appendChild(li);
-  });
-}
-
-// --- Mettre à jour score, avatar, thème et stickers ---
-function updateScoreAndAvatar() {
-  document.getElementById('score').textContent = 'Points: ' + points;
-
-  const avatarImg = document.getElementById('avatar');
-  let themeColor = '#f0f8ff';
-
-  if(points >= 100) {
-    avatarImg.src = 'images/avatar3.png';
-    themeColor = '#fff2b2';
-  } else if(points >= 50) {
-    avatarImg.src = 'images/avatar2.png';
-    themeColor = '#d4f4dd';
-  } else {
-    avatarImg.src = 'images/avatar1.png';
-    themeColor = '#f0f8ff';
-  }
-
-  document.body.style.backgroundColor = themeColor;
-
-  // Stickers
-  let sticker = '';
-  if(points >= 30) sticker = '🎉';
-  if(points >= 70) sticker = '🏅';
-  if(points >= 120) sticker = '🚀';
-  document.getElementById('sticker').textContent = sticker;
-}
-
-// --- Ajouter une mise à jour ---
-function addUpdate(text) {
-  const updatesList = document.getElementById('updatesList');
-  const li = document.createElement('li');
-  li.textContent = text;
-  updatesList.appendChild(li);
-}
-
-// --- Reset complet ---
+// Réinitialiser le jeu
 function resetGame() {
-  tasks = [];
+  document.getElementById("tasks").innerHTML = "";
+  document.getElementById("updatesList").innerHTML = "";
   points = 0;
-  localStorage.removeItem('funPlannerData');
-
-  document.getElementById('avatar').src = 'images/avatar1.png';
-  document.getElementById('sticker').textContent = '';
-  document.body.style.backgroundColor = '#f0f8ff';
-
-  renderTasks();
-  updateScoreAndAvatar();
-  addUpdate("Le jeu a été réinitialisé !");
+  updateScore();
+  logUpdate("Jeu réinitialisé");
 }
 
-// --- Au chargement de la page ---
-window.onload = function() {
-  loadData(); 
-  if(!tasks.some(t => t.bonus)) addDailyChallenge(); 
-  renderTasks();
-  updateScoreAndAvatar();
+// Mise à jour du score + avatar
+function updateScore() {
+  document.getElementById("score").textContent = `Points: ${points}`;
+  updateAvatar(points);
+}
 
-  // Exemples de mises à jour
-  addUpdate("Version 1.1 : lancement du FunPlanner");
-addUpdate("interface graphique renouveler")
-};
+// Avatar évolutif
+function updateAvatar(points) {
+  const avatar = document.getElementById("avatar");
+
+  if (points < 30) {
+    avatar.src = "images/avatar1.png";
+  } else if (points < 70) {
+    avatar.src = "images/avatar2.png";
+  } else if (points < 120) {
+    avatar.src = "images/avatar3.png";
+  } else if (points < 200) {
+    avatar.src = "images/avatar4.png";
+  } else {
+    avatar.src = "images/avatar5.png";
+  }
+}
+
+// Historique des mises à jour
+function logUpdate(text) {
+  const li = document.createElement("li");
+  li.textContent = text;
+  document.getElementById("updatesList").prepend(li);
+}
