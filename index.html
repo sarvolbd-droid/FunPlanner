@@ -6,62 +6,56 @@
   <link rel="icon" type="image/png" href="images/logo.png">
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       text-align: center;
       padding: 20px;
       background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
       margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
 
     h1 {
       color: #222;
       font-size: 2.5em;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.1);
     }
 
-    /* Avatar */
-    #avatar-container {
-      margin: 20px 0;
-      padding: 15px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 150px;
-    }
+    /* Avatar + sticker */
     #avatar {
       width: 120px;
       height: 120px;
+      margin: 15px 0;
       border-radius: 15px;
-      transition: transform 0.4s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
     }
     #avatar:hover {
       transform: scale(1.05);
     }
+    #sticker {
+      font-size: 40px;
+      margin-top: 10px;
+    }
 
-    /* Zone saisie */
+    /* Zone saisie + boutons */
     #taskInput {
       padding: 10px;
       border: 2px solid #ccc;
       border-radius: 8px;
       width: 220px;
-      margin-right: 10px;
+      margin-right: 5px;
     }
 
     button {
       margin: 5px;
-      padding: 10px 20px;
+      padding: 10px 18px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
       color: white;
       background: linear-gradient(135deg, #6a11cb, #2575fc);
-      transition: transform 0.2s, opacity 0.2s;
+      transition: all 0.2s ease;
     }
     button:hover {
       opacity: 0.9;
@@ -75,20 +69,17 @@
       margin-top: 20px;
       width: 80%;
       max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
     }
     #tasks li {
       background: white;
-      margin: 10px auto;
+      margin: 10px 0;
       padding: 12px;
       border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    }
-    #tasks button {
-      padding: 6px 12px;
-      font-size: 14px;
+      text-align: left;
+      font-size: 15px;
     }
 
     /* Score */
@@ -135,22 +126,15 @@
 </head>
 <body>
   <h1>FunPlanner</h1>
+  <img id="avatar" src="images/avatar1.png" alt="Avatar"/>
+  <div id="sticker"></div>
 
-  <!-- Avatar évolutif -->
-  <div id="avatar-container">
-    <img id="avatar" src="images/avatar1.png" alt="Avatar">
-  </div>
-
-  <!-- Entrée tâches -->
-  <input type="text" id="taskInput" placeholder="Nouvelle tâche...">
+  <input type="text" id="taskInput" placeholder="Nouvelle tâche">
   <button onclick="addTask()">Ajouter</button>
-  <button onclick="addDailyChallenge()">Challenge du jour</button>
+  <button onclick="addDailyChallenge()">Ajouter le challenge du jour</button>
   <button onclick="resetGame()">Reset</button>
 
-  <!-- Liste des tâches -->
   <ul id="tasks"></ul>
-
-  <!-- Score -->
   <div id="score">Points: 0</div>
 
   <!-- Musique de fond -->
