@@ -6,68 +6,130 @@
   <link rel="icon" type="image/png" href="images/logo.png">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
       padding: 20px;
-      background: #f0f8ff;
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+
     h1 {
-      color: #333;
+      color: #222;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
-    #tasks {
-      list-style: none;
-      padding: 0;
-      margin-top: 20px;
-    }
-    #tasks li {
-      margin: 10px 0;
-    }
-    button {
-      margin: 5px;
-      padding: 8px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      background-color: #4caf50;
-      color: white;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    #score {
-      font-weight: bold;
-      margin-top: 20px;
-      font-size: 18px;
-    }
+
+    /* Avatar */
     #avatar-container {
       margin: 20px 0;
+      padding: 15px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 150px;
     }
     #avatar {
       width: 120px;
       height: 120px;
-      border-radius: 10px;
+      border-radius: 15px;
+      transition: transform 0.4s ease;
+    }
+    #avatar:hover {
+      transform: scale(1.05);
+    }
+
+    /* Zone saisie */
+    #taskInput {
+      padding: 10px;
       border: 2px solid #ccc;
+      border-radius: 8px;
+      width: 220px;
+      margin-right: 10px;
+    }
+
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    button:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    /* Liste des tâches */
+    #tasks {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+      width: 80%;
+      max-width: 400px;
+    }
+    #tasks li {
+      background: white;
+      margin: 10px auto;
+      padding: 12px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+    #tasks button {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+
+    /* Score */
+    #score {
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 20px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      display: inline-block;
     }
 
     /* Zone mises à jour */
     #updates {
       position: fixed;
-      top: 20px;
+      bottom: 20px;
       right: 20px;
       width: 250px;
-      max-height: 400px;
+      max-height: 300px;
       overflow-y: auto;
       background-color: rgba(255,255,255,0.95);
-      border: 2px solid #ccc;
-      border-radius: 10px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
       padding: 10px;
       font-size: 14px;
-      text-align: left;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     #updates h3 {
-      margin-top: 0;
+      margin: 0 0 10px 0;
       font-size: 16px;
       text-align: center;
+      color: #444;
+    }
+    #updates ul {
+      padding-left: 18px;
+      margin: 0;
+    }
+    #updates li {
+      margin-bottom: 6px;
     }
   </style>
 </head>
@@ -80,7 +142,7 @@
   </div>
 
   <!-- Entrée tâches -->
-  <input type="text" id="taskInput" placeholder="Nouvelle tâche">
+  <input type="text" id="taskInput" placeholder="Nouvelle tâche...">
   <button onclick="addTask()">Ajouter</button>
   <button onclick="addDailyChallenge()">Challenge du jour</button>
   <button onclick="resetGame()">Reset</button>
