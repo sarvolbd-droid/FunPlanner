@@ -5,104 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FunPlanner 1.2.1</title>
   <style>
-    /* Reset basique */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f4f4f9; color: #333; }
 
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f9;
-      color: #333;
-      line-height: 1.6;
-    }
-
-    header {
-      background: #4a90e2;
-      color: #fff;
-      padding: 15px;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 1.8rem;
-    }
-
-    header p {
-      font-size: 1rem;
-      margin-top: 5px;
-    }
+    header { background: #4a90e2; color: #fff; padding: 15px; text-align: center; }
+    header h1 { font-size: 1.8rem; }
+    header p { font-size: 1rem; }
 
     .update-banner {
-      background: #ffcc00;
-      color: #222;
-      padding: 10px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 0.95rem;
+      background: #ffcc00; color: #222;
+      padding: 10px; text-align: center; font-weight: bold;
     }
 
-    main {
-      max-width: 1200px;
-      margin: auto;
-      padding: 20px;
-    }
+    main { max-width: 900px; margin: auto; padding: 20px; }
 
     .card {
-      background: #fff;
-      border-radius: 12px;
+      background: #fff; border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 20px;
-      margin-bottom: 20px;
-      transition: transform 0.2s;
+      padding: 20px; margin-bottom: 20px;
     }
 
-    .card:hover {
-      transform: translateY(-3px);
-    }
+    .card h2 { margin-bottom: 10px; color: #4a90e2; }
 
-    .card h2 {
-      margin-bottom: 10px;
-      font-size: 1.4rem;
-      color: #4a90e2;
+    /* Formulaire */
+    #taskForm { display: flex; gap: 10px; margin-bottom: 15px; }
+    #taskInput {
+      flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px;
     }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+    #addTask {
+      background: #4a90e2; color: white; border: none;
+      padding: 10px 15px; border-radius: 8px; cursor: pointer;
     }
+    #addTask:hover { background: #357ab8; }
 
-    footer {
-      text-align: center;
-      padding: 15px;
-      background: #222;
-      color: #fff;
-      margin-top: 20px;
+    /* Liste des tâches */
+    ul { list-style: none; margin-top: 10px; padding: 0; }
+    li {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #f9f9f9; padding: 8px 12px; margin-bottom: 8px;
+      border-radius: 6px; transition: 0.2s;
     }
+    li.done span { text-decoration: line-through; color: #777; }
 
-    /* Responsive spécifique */
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 1.4rem;
-      }
-      .card h2 {
-        font-size: 1.2rem;
-      }
+    li span { flex: 1; cursor: pointer; }
+
+    button.remove {
+      background: red; color: #fff; border: none;
+      padding: 5px 10px; border-radius: 6px; cursor: pointer;
     }
+    button.remove:hover { background: darkred; }
 
-    @media (max-width: 480px) {
-      body {
-        font-size: 14px;
-      }
-      header {
-        padding: 10px;
-      }
-      main {
-        padding: 10px;
-      }
+    footer { text-align: center; padding: 15px; background: #222; color: #fff; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      #taskForm { flex-direction: column; }
+      #addTask { width: 100%; }
     }
   </style>
 </head>
@@ -113,28 +71,82 @@
   </header>
 
   <div class="update-banner">
-    🚀 Mini mise à jour 1.2.1 : FunPlanner est maintenant adapté à tous les écrans (PC, tablette, mobile) !
+    🚀 Mini mise à jour 1.2.1 : Adapté à tous les écrans + Ajout des tâches dynamiques avec sauvegarde ✅
   </div>
 
   <main>
-    <section class="grid">
-      <div class="card">
-        <h2>📅 Planning</h2>
-        <p>Organise facilement tes tâches et activités.</p>
-      </div>
-      <div class="card">
-        <h2>✅ Liste</h2>
-        <p>Crée et coche tes objectifs au quotidien.</p>
-      </div>
-      <div class="card">
-        <h2>⭐ Nouveauté 1.2.1</h2>
-        <p>L’interface est maintenant responsive et fonctionne sur PC, tablette et smartphone.</p>
-      </div>
-    </section>
+    <div class="card">
+      <h2>✅ Ma liste de tâches</h2>
+      <form id="taskForm">
+        <input type="text" id="taskInput" placeholder="Écris ta tâche ici..." required>
+        <button type="submit" id="addTask">Ajouter</button>
+      </form>
+      <ul id="taskList"></ul>
+    </div>
   </main>
 
   <footer>
     <p>FunPlanner v1.2.1 © 2025</p>
   </footer>
+
+  <script>
+    const form = document.getElementById("taskForm");
+    const input = document.getElementById("taskInput");
+    const list = document.getElementById("taskList");
+
+    // Charger les tâches sauvegardées
+    window.onload = () => {
+      const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      savedTasks.forEach(task => addTaskToDOM(task.text, task.done));
+    };
+
+    // Ajouter une tâche
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const taskText = input.value.trim();
+      if (taskText === "") return;
+      addTaskToDOM(taskText, false);
+      saveTasks();
+      input.value = "";
+    });
+
+    // Fonction pour ajouter une tâche dans le DOM
+    function addTaskToDOM(taskText, done) {
+      const li = document.createElement("li");
+      const span = document.createElement("span");
+      span.textContent = taskText;
+      li.appendChild(span);
+
+      if (done) li.classList.add("done");
+
+      span.addEventListener("click", () => {
+        li.classList.toggle("done");
+        saveTasks();
+      });
+
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "X";
+      removeBtn.className = "remove";
+      removeBtn.addEventListener("click", () => {
+        li.remove();
+        saveTasks();
+      });
+
+      li.appendChild(removeBtn);
+      list.appendChild(li);
+    }
+
+    // Sauvegarder les tâches
+    function saveTasks() {
+      const tasks = [];
+      document.querySelectorAll("#taskList li").forEach(li => {
+        tasks.push({
+          text: li.querySelector("span").textContent,
+          done: li.classList.contains("done")
+        });
+      });
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+  </script>
 </body>
 </html>
