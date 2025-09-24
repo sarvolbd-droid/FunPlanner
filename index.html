@@ -2,150 +2,139 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>FunPlanner</title>
-  <link rel="icon" type="image/png" href="images/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FunPlanner 1.2.1</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding: 20px;
-      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    /* Reset basique */
+    * {
       margin: 0;
-    }
-
-    h1 {
-      color: #222;
-      font-size: 2.5em;
-      margin-bottom: 15px;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.1);
-    }
-
-    /* Avatar + sticker */
-    #avatar {
-      width: 120px;
-      height: 120px;
-      margin: 15px 0;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
-    }
-    #avatar:hover {
-      transform: scale(1.05);
-    }
-    #sticker {
-      font-size: 40px;
-      margin-top: 10px;
-    }
-
-    /* Zone saisie + boutons */
-    #taskInput {
-      padding: 10px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      width: 220px;
-      margin-right: 5px;
-    }
-
-    button {
-      margin: 5px;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      color: white;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      transition: all 0.2s ease;
-    }
-    button:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-    }
-
-    /* Liste des tâches */
-    #tasks {
-      list-style: none;
       padding: 0;
-      margin-top: 20px;
-      width: 80%;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #tasks li {
-      background: white;
-      margin: 10px 0;
-      padding: 12px;
-      border-radius: 10px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-      text-align: left;
-      font-size: 15px;
+      box-sizing: border-box;
     }
 
-    /* Score */
-    #score {
-      font-weight: bold;
-      margin-top: 20px;
-      font-size: 20px;
-      padding: 10px 20px;
-      border-radius: 20px;
-      background: #fff;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-      display: inline-block;
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      color: #333;
+      line-height: 1.6;
     }
 
-    /* Zone mises à jour */
-    #updates {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 250px;
-      max-height: 300px;
-      overflow-y: auto;
-      background-color: rgba(255,255,255,0.95);
-      border: 2px solid #ddd;
-      border-radius: 12px;
-      padding: 10px;
-      font-size: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    #updates h3 {
-      margin: 0 0 10px 0;
-      font-size: 16px;
+    header {
+      background: #4a90e2;
+      color: #fff;
+      padding: 15px;
       text-align: center;
-      color: #444;
     }
-    #updates ul {
-      padding-left: 18px;
-      margin: 0;
+
+    header h1 {
+      font-size: 1.8rem;
     }
-    #updates li {
-      margin-bottom: 6px;
+
+    header p {
+      font-size: 1rem;
+      margin-top: 5px;
+    }
+
+    .update-banner {
+      background: #ffcc00;
+      color: #222;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card h2 {
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+      color: #4a90e2;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #222;
+      color: #fff;
+      margin-top: 20px;
+    }
+
+    /* Responsive spécifique */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.4rem;
+      }
+      .card h2 {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        font-size: 14px;
+      }
+      header {
+        padding: 10px;
+      }
+      main {
+        padding: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>FunPlanner</h1>
-  <img id="avatar" src="images/avatar1.png" alt="Avatar"/>
-  <div id="sticker"></div>
+  <header>
+    <h1>FunPlanner – Version 1.2.1</h1>
+    <p>Ton compagnon d’organisation amusant ✨</p>
+  </header>
 
-  <input type="text" id="taskInput" placeholder="Nouvelle tâche">
-  <button onclick="addTask()">Ajouter</button>
-  <button onclick="addDailyChallenge()">Ajouter le challenge du jour</button>
-  <button onclick="resetGame()">Reset</button>
-
-  <ul id="tasks"></ul>
-  <div id="score">Points: 0</div>
-
-  <!-- Musique de fond -->
-  <audio id="bgMusic" src="audio/background.mp3" autoplay loop></audio>
-
-  <!-- Zone mises à jour -->
-  <div id="updates">
-    <h3>Mises à jour</h3>
-    <ul id="updatesList"></ul>
+  <div class="update-banner">
+    🚀 Mini mise à jour 1.2.1 : FunPlanner est maintenant adapté à tous les écrans (PC, tablette, mobile) !
   </div>
 
-  <script src="script.js"></script>
+  <main>
+    <section class="grid">
+      <div class="card">
+        <h2>📅 Planning</h2>
+        <p>Organise facilement tes tâches et activités.</p>
+      </div>
+      <div class="card">
+        <h2>✅ Liste</h2>
+        <p>Crée et coche tes objectifs au quotidien.</p>
+      </div>
+      <div class="card">
+        <h2>⭐ Nouveauté 1.2.1</h2>
+        <p>L’interface est maintenant responsive et fonctionne sur PC, tablette et smartphone.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>FunPlanner v1.2.1 © 2025</p>
+  </footer>
 </body>
 </html>
